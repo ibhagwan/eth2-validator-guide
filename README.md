@@ -15,7 +15,7 @@ Early on in my research I realized the rather large storage requirements for the
 
 Although I could choose lower quality hosting for cheap storage, I didn't want to compromise on C-level hosting that uses HDDs and other sub-optimal setups so I decided to "outsource" my Eth1 client services to one of the [many Eth1 providers](https://ethereumnodes.com).
 
-Theoretically this approach had one pitfall: relying on a Eth1 provider you have no control of, as proven by the now famous [Infura Nov 2020 outrage](https://blog.infura.io/infura-mainnet-outage-post-mortem-2020-11-11/). Thankfully this was easily solved using [`lighthouse` built-in redundancy](https://lighthouse-book.sigmaprime.io/redundancy.html) using 2 or more Eth1 providers.
+Theoretically this approach had one pitfall: relying on a Eth1 provider you have no control of, as proven by the now famous [Infura Nov 2020 outage](https://blog.infura.io/infura-mainnet-outage-post-mortem-2020-11-11/). Thankfully this was easily solved using [`lighthouse` built-in redundancy](https://lighthouse-book.sigmaprime.io/redundancy.html) using 2 or more Eth1 providers.
 
 Lastly, I wanted to run my validator on a minimal linux distribution ([Void Linux](https://voidlinux.org) was my choice) which uses `runit` rather than `systemd` (Ubuntu) as most guides out there recommend. This guide is a result of my note taking during the process. Note that **there is absolutely nothing wrong with Ubuntu or `systemd`**, this is simply a personal preference.
 
@@ -230,6 +230,8 @@ EOF
 #!/bin/sh
 exec chpst -u lighthouse:lighthouse svlogd -tt /var/log/lighthouse-pyrmont
 EOF
+# chmod a+x /etc/sv/lighthouse-pyrmont/run
+# chmod a+x /etc/sv/lighthouse-pyrmont/log/run
 # ln -s /etv/sv/lighthouse-pyrmont /var/service
 ```
 > **Notes:**
@@ -261,6 +263,8 @@ EOF
 #!/bin/sh
 exec chpst -u lighthouse:lighthouse svlogd -tt /var/log/lighthouse-prater
 EOF
+# chmod a+x /etc/sv/lighthouse-prater/run
+# chmod a+x /etc/sv/lighthouse-prater/log/run
 # ln -s /etv/sv/lighthouse-prater /var/service
 ```
 > **Notes:**
@@ -290,6 +294,8 @@ EOF
 #!/bin/sh
 exec chpst -u lighthouse:lighthouse svlogd -tt /var/log/lighthouse-mainnnet
 EOF
+# chmod a+x /etc/sv/lighthouse-mainnet/run
+# chmod a+x /etc/sv/lighthouse-mainnet/log/run
 # ln -s /etv/sv/lighthouse-mainnet /var/service
 ```
 > **Notes:**
@@ -363,6 +369,8 @@ EOF
 #!/bin/sh
 exec chpst -u validator:validator svlogd -tt /var/log/validator-pyrmont
 EOF
+# chmod a+x /etc/sv/validator-pyrmont/run
+# chmod a+x /etc/sv/validator-pyrmont/log/run
 # ln -s /etv/sv/validator-pyrmont /var/service
 ```
 > **Note:** `--beacon-nodes` should specify the port we set using `--http-port` in our beacon node service earlier in the guide.
@@ -386,6 +394,8 @@ EOF
 #!/bin/sh
 exec chpst -u validator:validator svlogd -tt /var/log/validator-prater
 EOF
+# chmod a+x /etc/sv/validator-prater/run
+# chmod a+x /etc/sv/validator-prater/log/run
 # ln -s /etv/sv/validator-prater /var/service
 ```
 > **Note:** `--beacon-nodes` should specify the port we set using `--http-port` in our beacon node service earlier in the guide.
@@ -409,6 +419,8 @@ EOF
 #!/bin/sh
 exec chpst -u validator:validator svlogd -tt /var/log/validator-mainnnet
 EOF
+# chmod a+x /etc/sv/validator-mainnet/run
+# chmod a+x /etc/sv/validator-mainnet/log/run
 # ln -s /etv/sv/validator-mainnnet /var/service
 ```
 
